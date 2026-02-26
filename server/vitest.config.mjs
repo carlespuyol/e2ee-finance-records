@@ -13,7 +13,7 @@ export default defineConfig({
     env: {
       DATABASE_PATH: ':memory:',
       JWT_SECRET: 'test-secret-for-unit-tests',
-      CLIENT_ORIGIN: 'http://localhost:5173',
+      CLIENT_ORIGIN: 'http://0.0.0.0:5173',
     },
   },
 });

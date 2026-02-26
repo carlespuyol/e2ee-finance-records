@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3003;
 // CORS: only allow the configured client origin (Vite dev server in development)
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || 'https://localhost:5173',
+    origin: process.env.CLIENT_ORIGIN || 'https://0.0.0.0:5173',
     credentials: true,
   })
 );
@@ -55,6 +55,6 @@ if (require.main === module) {
   }
 
   https.createServer(tlsOptions, app).listen(PORT, () => {
-    console.log(`Server listening on https://localhost:${PORT}`);
+    console.log(`Server listening on https://0.0.0.0:${PORT}`);
   });
 }

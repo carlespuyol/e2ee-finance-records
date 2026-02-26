@@ -165,9 +165,9 @@ describe('PRD §8.2 Backend Security Rules', () => {
   it('CORS: response includes correct origin header for allowed origin', async () => {
     const res = await request(app)
       .get('/api/health')
-      .set('Origin', 'http://localhost:5173');
+      .set('Origin', 'http://0.0.0.0:5173');
 
-    expect(res.headers['access-control-allow-origin']).toBe('http://localhost:5173');
+    expect(res.headers['access-control-allow-origin']).toBe('http://0.0.0.0:5173');
   });
 
   it('known gap — JWT replay after logout: server-side token remains valid until expiry (no revocation)', async () => {

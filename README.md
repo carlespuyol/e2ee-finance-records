@@ -4,10 +4,31 @@ A production-quality web application for storing sensitive finance records with 
 
 ---
 
+## Prerequisites
+
+### Node.js ≥ 20.19
+
+Vite 6 requires Node 20.19+. **Node 20 LTS** is recommended.
+
+**Amazon Linux 2023 / RHEL:**
+```bash
+curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+sudo yum install -y nodejs
+```
+
+**Ubuntu / Debian:**
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt-get install -y nodejs
+```
+
+**Windows:** Install from [nodejs.org](https://nodejs.org) (LTS). Run cert scripts in **Git Bash**.
+
+---
+
 ## Quick Start
 
 ```bash
-# Requires Node >= 18
 cd e2ee-finance-records
 
 # Step 1 — generate TLS certificates (one-time)
