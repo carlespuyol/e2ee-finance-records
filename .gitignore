@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Database (SQLite + WAL mode side-files)
+database.sqlite
+database.sqlite-shm
+database.sqlite-wal
+
+# Environment / secrets
+#.env
+#.env.local
+#.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.suo
+*.swp
