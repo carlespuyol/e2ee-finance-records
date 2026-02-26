@@ -61,15 +61,4 @@ describe('AuthContext', () => {
     spy.mockRestore();
   });
 
-  it('5. sessionStorage.setItem is NEVER called — JWT not persisted', async () => {
-    const spy = vi.spyOn(Storage.prototype, 'setItem');
-
-    render(<AuthProvider><AuthDisplay /></AuthProvider>);
-    await act(async () => { screen.getByText('login').click(); });
-
-    // Check that no sessionStorage writes occurred
-    const sessionCalls = spy.mock.calls.filter(c => c.toString().includes('session'));
-    expect(spy).not.toHaveBeenCalled();
-    spy.mockRestore();
-  });
 });

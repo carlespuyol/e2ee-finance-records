@@ -21,7 +21,7 @@ async function request<T>(
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const res = await fetch(`${BASE}${path}`, { ...options, headers });
+  const res = await fetch(`${BASE}${path}`, { ...options, headers, signal: AbortSignal.timeout(30_000) });
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: 'Request failed' }));

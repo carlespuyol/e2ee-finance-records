@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../services/api';
 import { decrypt } from '../services/crypto';
-import { DecryptedRecord, StoredEncryptedRecord } from '../types';
+import { DecryptedRecord, FinanceRecord, StoredEncryptedRecord } from '../types';
 import RecordForm from '../components/RecordForm';
 import RecordList from '../components/RecordList';
 
@@ -18,14 +18,18 @@ export default function DashboardPage() {
     setError('');
     try {
       const { records: encrypted } = await api.getRecords(auth.token);
-      const decrypted = await Promise.all(
+      const results = await Promise.allSettled(
         encrypted.map(async (r: StoredEncryptedRecord): Promise<DecryptedRecord> => {
           const plaintext = await decrypt(auth.cryptoKey, r.encryptedData, r.iv);
-          const data = JSON.parse(plaintext);
+          const data = JSON.parse(plaintext) as FinanceRecord;
           return { ...data, id: r.id, createdAt: r.createdAt };
         })
       );
-      setRecords(decrypted);
+      setRecords(
+        results
+          .filter((r): r is PromiseFulfilledResult<DecryptedRecord> => r.status === 'fulfilled')
+          .map(r => r.value)
+      );
     } catch (err: unknown) {
       const apiErr = err as { status?: number; message?: string };
       if (apiErr.status === 401) {

@@ -26,6 +26,8 @@ db.exec(`
     created_at     TEXT DEFAULT (datetime('now')),
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
+
+  CREATE INDEX IF NOT EXISTS idx_records_user_id ON records(user_id);
 `);
 
 export default db;

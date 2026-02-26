@@ -81,13 +81,13 @@ export default function RecordForm({ onAdded }: Props) {
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Field label="Product Name" name="productName" type="text"
-          value={form.productName} onChange={handleChange} required placeholder="e.g. MacBook Pro" />
+          value={form.productName} onChange={handleChange} required placeholder="e.g. MacBook Pro" maxLength={200} />
         <Field label="Price" name="price" type="number"
           value={form.price} onChange={handleChange} required placeholder="0.00" min="0" step="0.01" />
         <Field label="Seller" name="seller" type="text"
-          value={form.seller} onChange={handleChange} required placeholder="e.g. Apple Store" />
+          value={form.seller} onChange={handleChange} required placeholder="e.g. Apple Store" maxLength={200} />
         <Field label="Sales Person" name="salesPerson" type="text"
-          value={form.salesPerson} onChange={handleChange} required placeholder="e.g. John Smith" />
+          value={form.salesPerson} onChange={handleChange} required placeholder="e.g. John Smith" maxLength={200} />
         <Field label="Date & Time" name="time" type="datetime-local"
           value={form.time} onChange={handleChange} required />
 
