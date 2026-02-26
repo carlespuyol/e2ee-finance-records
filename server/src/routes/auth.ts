@@ -63,11 +63,11 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
     const normalizedEmail = email.toLowerCase().trim();
     const user = db
-      .prepare('SELECT * FROM users WHERE email = ?')
+      .prepare('SELECT id, email, password_hash FROM users WHERE email = ?')
       .get(normalizedEmail) as User | undefined;
 
     // Use constant-time comparison to prevent user enumeration timing attacks
-    const dummyHash = '$2b$12$invalidhashforuserwhennotfound00000000000000000000000';
+    const dummyHash = '$2b$12$eImiTXuWVxfM37uY4JANjQ9MvBpTTBGXFN4eMSepFPtOAqEJ1lzUy';
     const hashToCompare = user ? user.password_hash : dummyHash;
     const valid = await bcrypt.compare(password, hashToCompare);
 
