@@ -1,5 +1,8 @@
 import 'dotenv/config';
 import './config'; // validate required env vars at startup
+import https from 'node:https';
+import fs from 'node:fs';
+import path from 'node:path';
 import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
@@ -12,7 +15,7 @@ const PORT = process.env.PORT || 3003;
 // CORS: only allow the configured client origin (Vite dev server in development)
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+    origin: process.env.CLIENT_ORIGIN || 'https://localhost:5173',
     credentials: true,
   })
 );
@@ -39,7 +42,19 @@ export { app };
 
 // Only start listening when this file is the entry point (not when imported by tests)
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server listening on http://localhost:${PORT}`);
+  const keyPath  = process.env.TLS_KEY_PATH  ?? path.resolve(process.cwd(), '..', 'certs', 'key.pem');
+  const certPath = process.env.TLS_CERT_PATH ?? path.resolve(process.cwd(), '..', 'certs', 'cert.pem');
+
+  let tlsOptions: { key: Buffer; cert: Buffer };
+  try {
+    tlsOptions = { key: fs.readFileSync(keyPath), cert: fs.readFileSync(certPath) };
+  } catch {
+    throw new Error(
+      `TLS cert/key not found.\n  key:  ${keyPath}\n  cert: ${certPath}\nRun: bash scripts/generate-certs.sh`
+    );
+  }
+
+  https.createServer(tlsOptions, app).listen(PORT, () => {
+    console.log(`Server listening on https://localhost:${PORT}`);
   });
 }

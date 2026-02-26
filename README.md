@@ -10,16 +10,63 @@ A production-quality web application for storing sensitive finance records with 
 # Requires Node >= 18
 cd e2ee-finance-records
 
+# Step 1 — generate TLS certificates (one-time)
+bash scripts/generate-certs.sh
+
+# Step 2 — install dependencies
 npm install
 npm install --prefix server
 npm install --prefix client
 
+# Step 3 — run dev servers
 npm run dev
 ```
 
-Open **http://localhost:5173**. The server runs on port 3003.
+Open **https://localhost:5173**. The server runs on **https://localhost:3003**.
 
-> **Note:** `better-sqlite3` uses native bindings. On Windows you may need [Build Tools for Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if prebuilt binaries are unavailable for your Node version. Node 20 LTS has prebuilt binaries available.
+> **Browser warning:** On first visit the browser will show an "untrusted certificate" warning. Click *Advanced → Proceed to localhost* to continue. To suppress it permanently, add `certs/cert.pem` to your OS or browser trust store.
+
+> **Windows:** Run the cert script in Git Bash (OpenSSL ships with Git for Windows).
+
+> **`better-sqlite3`** uses native bindings. On Windows you may need [Build Tools for Visual Studio](https://visualstudio.microsoft.com/visual-cpp-build-tools/) if prebuilt binaries are unavailable for your Node version. Node 20 LTS has prebuilt binaries available.
+
+### Cloud deployment
+
+The Vite dev server binds to `0.0.0.0`, so it is reachable at `https://<machine-ip>:5173`. The Express API server also binds to all interfaces on port 3003.
+
+**Step 1 — generate a cert that includes the cloud machine's public IP or domain:**
+
+```bash
+# Replace 1.2.3.4 with your cloud machine's actual public IP or domain
+bash scripts/generate-certs.sh 1.2.3.4
+# or
+bash scripts/generate-certs.sh myapp.example.com
+```
+
+`localhost` and `127.0.0.1` are always included; extra args are appended as additional SANs.
+
+**Step 2 — set env vars:**
+
+```bash
+# Copy the generated cert files (scp, rsync, etc.)
+# scp -r certs/ user@1.2.3.4:/path/to/app/certs/
+
+# Set in the server's .env (or shell environment)
+CLIENT_ORIGIN=https://1.2.3.4:5173
+# Optional — only needed if cert files are not at ../certs/ relative to server/
+# TLS_KEY_PATH=/path/to/key.pem
+# TLS_CERT_PATH=/path/to/cert.pem
+```
+
+**Step 3 — run:**
+
+```bash
+npm run dev   # or npm start for production build
+```
+
+Access the app at `https://1.2.3.4:5173`. The Vite proxy forwards `/api` requests to `https://localhost:3003` on the same machine — no extra config needed.
+
+> For a CA-signed certificate (no browser warning) use Let's Encrypt / Certbot instead of `generate-certs.sh`.
 
 ---
 

@@ -9,6 +9,9 @@ database.sqlite
 database.sqlite-shm
 database.sqlite-wal
 
+# TLS certificates (generated locally, copied to server manually — private key must never be committed)
+certs/
+
 # Environment / secrets
 #.env
 #.env.local
