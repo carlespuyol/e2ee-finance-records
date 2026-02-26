@@ -59,7 +59,7 @@ export default function LoginPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-semibold text-white tracking-tight">SecureVault</h1>
+          <h1 className="text-2xl font-semibold text-white tracking-tight">SecureFinance</h1>
           <p className="text-slate-500 text-sm mt-1">End-to-end encrypted finance records</p>
         </div>
 

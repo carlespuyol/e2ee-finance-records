@@ -1,4 +1,4 @@
-# SecureVault — E2EE Finance Records
+# SecureFinance — E2EE Finance Records
 
 A production-quality web application for storing sensitive finance records with **end-to-end encryption**. Records are encrypted entirely on the client before upload; the server stores and returns only ciphertext and never possesses the ability to decrypt.
 
